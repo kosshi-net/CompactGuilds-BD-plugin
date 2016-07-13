@@ -1,25 +1,4 @@
 //META{"name":"CompactGuilds"}*//
-/* jshint devel:true */
-/* globals $, BdApi*/
-
-
-// CompactGuilds.plugin.js
-
-// What does it do?
-// 		http://i.imgur.com/DU61nY1.gif
-//		Hides guild/serverlist automatically depending on window size and cursor location. 
-
-// How to install?
-// 		Install native Discord application
-// 		Install BetterDiscord
-// 		Go to %appdata%/BetterDiscord/plugins (or Settings>BetterDiscord>Plugins>Open Plugin Folder)
-// 		Create a file CompactGuilds.plugin.js
-// 		Click the "Raw" button on top-right corner
-// 		Paste the raw text to the file (Protip! CTRL+A)
-// 		Reload/restart Discord (Protip! CTRL+R)
-// 		Go to Settings>BetterDiscord>Plugins
-// 		Enable and configure this plugin
-
 
 'use strict';
 var CompactGuilds = function () {};
@@ -172,15 +151,15 @@ CompactGuilds.prototype.settingsVersion = 9;
 CompactGuilds.prototype.defaultSettings = function () {
 	// Returns default settings
 	return {
-		version: this.settingsVersion,
-		show:30,
-		hide:80,
-		trim:true,
-		activeWidth: 1000,
-		always: false,
-		mobilefy: false,
-		animspeed:200,
-		animstyle:"Linear"
+		version: this.settingsVersion, 
+		show:30, 				// Min cursor distance (px) from left edge to view the sidebar
+		hide:300, 				// Cursor distance (px) from left edge to hide the sidebar again
+		trim:true,				// Edit channel css to make it slimmer
+		activeWidth: 1000,		// Plugin activation threshold
+		always: false,			// Ignore activeWidth, keep the bar hidden always
+		mobilefy: true,			// Hide channels too. (Originally this plugin only hid the guilds)
+		animspeed:200,			// Animation speed in milliseconds
+		animstyle:"Linear"		// Animation style
 	};
 };
 
@@ -196,7 +175,7 @@ CompactGuilds.prototype.loadSettings = function() {
 };
 
 CompactGuilds.prototype.resetSettings = function (button) {
-	// Manually set settings to default
+	// Set settings to default and restarts the plugin
 	var settings = this.defaultSettings();
 	localStorage.CompactGuilds = JSON.stringify(settings);
 	this.stop();
@@ -206,7 +185,7 @@ CompactGuilds.prototype.resetSettings = function (button) {
 };
 
 CompactGuilds.prototype.saveSettings = function (button) {
-	// Saves settings
+	// Saves settings from setting panel
 	var settings = this.loadSettings();
 	settings.animspeed = document.getElementById('hg_animspeed').value;
 	settings.animstyle = document.getElementById('hg_animstyle').value;
@@ -260,12 +239,11 @@ CompactGuilds.prototype.getSettingsPanel = function () {
 
 	html += "<input type='checkbox' id='hg_mobilefy'";
 	html += (settings.mobilefy) ? " checked>" : ">";
-	html += "Hide channels too, go full mobile!<br>";
+	html += "Hide channels too<br>";
 
 	html +="<br><button onclick='BdApi.getPlugin(\"CompactGuilds\").saveSettings(this)'>Save and apply</button>";
 	html +="<button onclick='BdApi.getPlugin(\"CompactGuilds\").resetSettings(this)'>Reset settings</button> <br><br>";
 
-	html += "Protip#1) If you checked 'hide channels too', set 'hide distance' to around 300px.<br>";
-	html += "Protip#2) You can open settings with 'ctrl+comma' if you get stuck.<br>";
+	html += "If your hide distance is too low you might not be able to access the settings panel. Use CTRL+COMMA (,) if this happens.";
 	return html;
 };
