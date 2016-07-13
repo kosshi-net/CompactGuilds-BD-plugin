@@ -2,7 +2,7 @@
 This is a plugin for BetterDiscord.
 
 ### What does it do?
-Hides the left channel/guildlist when window width is under a specified size giving more space for the text. The sidebar slides to visibility when your mouse is near left edge.
+Hides the left channel/guildlist when window width is under a specified size giving more space for the text. The sidebar slides to visibility when your cursor is near left edge.
 
 ![Exaple gif](http://kosshi.fi/images/bdplugin.gif)
 
