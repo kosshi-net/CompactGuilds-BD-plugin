@@ -50,7 +50,7 @@ CompactGuilds.prototype.enable = function() {
 	
 	if(settings.trim){
 		var accountName = document.getElementsByClassName('username')[0];
-		accountName.style.maxWidth = "40px";
+		accountName.style.maxWidth = "45px";
 		channels.style.width = '200px';
 	}
 
