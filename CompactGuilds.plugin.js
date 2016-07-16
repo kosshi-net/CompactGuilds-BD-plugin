@@ -100,7 +100,8 @@ CompactGuilds.prototype.enable = function() {
 		outGuilds.style.display = "block";
 		guilds.style.left = "0px";
 		if(settings.mobilefy){
-			channels.style.left = "80px";
+			// fix for minimal mode
+			channels.style.left = ($("body").hasClass("bd-minimal")) ? "40px" : "80px";
 		}
 	};
 	outGuilds.onmouseover = function(){ 
@@ -146,7 +147,7 @@ CompactGuilds.prototype.observer = function () {};
 // SETTINGS
 // ========
 
-CompactGuilds.prototype.settingsVersion = 9; 
+CompactGuilds.prototype.settingsVersion = 10; 
 	// Changing this value causes old versions of settings to be resetted. 
 CompactGuilds.prototype.defaultSettings = function () {
 	// Returns default settings
@@ -232,6 +233,7 @@ CompactGuilds.prototype.getSettingsPanel = function () {
 	html += "<input type='checkbox' id='hg_always'";
 	html += (settings.always) ? " checked>" : ">";
 	html += "Enable guild hiding always<br>";
+
 
 	html += "<input type='checkbox' id='hg_trim'";
 	html += (settings.trim) ? " checked>" : ">";
