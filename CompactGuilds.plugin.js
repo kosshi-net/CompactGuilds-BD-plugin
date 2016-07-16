@@ -50,7 +50,7 @@ CompactGuilds.prototype.enable = function() {
 	
 	if(settings.trim){
 		var accountName = document.getElementsByClassName('username')[0];
-		accountName.style.maxWidth = "45px";
+		accountName.style.maxWidth = "40px";
 		channels.style.width = '200px';
 	}
 
@@ -101,7 +101,7 @@ CompactGuilds.prototype.enable = function() {
 		guilds.style.left = "0px";
 		if(settings.mobilefy){
 			// fix for minimal mode
-			channels.style.left = ($("body").hasClass("bd-minimal")) ? "40px" : "80px";
+			channels.style.left = ($("body").hasClass("bd-minimal")) ? "45px" : "80px";
 		}
 	};
 	outGuilds.onmouseover = function(){ 
