@@ -18,15 +18,14 @@ CompactGuilds.prototype.getVersion = function () {
 CompactGuilds.prototype.windowResizeEvent = function() {
 	// Called when window is resized.
 	var settings = CompactGuilds.prototype.loadSettings();
-	var plugin = BdApi.getPlugin('CompactGuilds');
 	if(settings.always) {
-		plugin.enable();
+		this.enable();
 		return;
 	}
 	if(window.innerWidth < settings.activeWidth){
-		if(!plugin.enabled) plugin.enable();
+		if(!this.enabled) this.enable();
 	}else{
-		if(plugin.enabled) plugin.disable();
+		if(this.enabled) this.disable();
 	}
 };
 
@@ -34,7 +33,7 @@ CompactGuilds.prototype.enabled = false; // if guilds are hidden
 
 CompactGuilds.prototype.start = function () {
 	// Called when plugin is started
-	window.addEventListener('resize',this.windowResizeEvent,false);
+	window.addEventListener('resize',this.windowResizeEvent.bind(this),false);
 	this.windowResizeEvent();
 };
 
@@ -166,11 +165,11 @@ CompactGuilds.prototype.defaultSettings = function () {
 
 CompactGuilds.prototype.loadSettings = function() {
 	// Loads settings from localstorage
-	var settings = (localStorage.CompactGuilds) ? JSON.parse(localStorage.CompactGuilds) : {version:"0"};
+	var settings = (bdPluginStorage.get(this.getName(), 'config')) ? JSON.parse(bdPluginStorage.get(this.getName(), 'config')) : {version:"0"};
 	if(settings.version != this.settingsVersion){
-		console.log('[CompactGuilds] Settings were outdated/invalid/nonexistent. Using default settings.');
+		console.log('['+this.getName()+'] Settings were outdated/invalid/nonexistent. Using default settings.');
 		settings = this.defaultSettings();
-		localStorage.CompactGuilds = JSON.stringify(settings);
+		bdPluginStorage.set(this.getName(), 'config', JSON.stringify(settings));
 	}
 	return settings;
 };
@@ -178,12 +177,18 @@ CompactGuilds.prototype.loadSettings = function() {
 CompactGuilds.prototype.resetSettings = function (button) {
 	// Set settings to default and restarts the plugin
 	var settings = this.defaultSettings();
-	localStorage.CompactGuilds = JSON.stringify(settings);
+	bdPluginStorage.set(this.getName(), 'config', JSON.stringify(settings));
 	this.stop();
 	this.start();
 	button.innerHTML = "Settings resetted!";
-	setTimeout(function(){button.innerHTML = "Reset settings";},1000);
+	setTimeout(()=>{button.innerHTML = "Reset settings";},1000);
 };
+
+CompactGuilds.prototype.import = function (string) {
+	bdPluginStorage.set(this.getName(), 'config', string);
+	this.stop();
+	this.start();
+}
 
 CompactGuilds.prototype.saveSettings = function (button) {
 	// Saves settings from setting panel
@@ -197,7 +202,7 @@ CompactGuilds.prototype.saveSettings = function (button) {
 	settings.mobilefy = document.getElementById('hg_mobilefy').checked;
 	settings.activeWidth = document.getElementById('hg_activeWidth').value;
 	
-	localStorage.CompactGuilds = JSON.stringify(settings);
+	bdPluginStorage.set(this.getName(), 'config', JSON.stringify(settings));
 
 	this.stop();
 	this.start();
@@ -243,8 +248,8 @@ CompactGuilds.prototype.getSettingsPanel = function () {
 	html += (settings.mobilefy) ? " checked>" : ">";
 	html += "Hide channels too<br>";
 
-	html +="<br><button onclick='BdApi.getPlugin(\"CompactGuilds\").saveSettings(this)'>Save and apply</button>";
-	html +="<button onclick='BdApi.getPlugin(\"CompactGuilds\").resetSettings(this)'>Reset settings</button> <br><br>";
+	html +="<br><button onclick=BdApi.getPlugin('"+this.getName()+"').saveSettings(this)>Save and apply</button>";
+	html +="<button onclick=BdApi.getPlugin('"+this.getName()+"').resetSettings(this)>Reset settings</button> <br><br>";
 
 	html += "If your hide distance is too low you might not be able to access the settings panel. Use CTRL+COMMA (,) if this happens.";
 	return html;
