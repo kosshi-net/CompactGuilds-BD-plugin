@@ -81,7 +81,7 @@ CompactGuilds.prototype.enable = function() {
 		"position": "fixed",
 		"height": "100%",
 		"zIndex": "3",
-		"left": "-80px",
+		"left": "-70px",
 		"transition": settings.animstyle +" "+settings.animspeed+"ms"
 	});
 	if(settings.mobilefy){
@@ -100,13 +100,13 @@ CompactGuilds.prototype.enable = function() {
 		guilds.style.left = "0px";
 		if(settings.mobilefy){
 			// fix for minimal mode
-			channels.style.left = ($("body").hasClass("bd-minimal")) ? "45px" : "80px";
+			channels.style.left = ($("body").hasClass("bd-minimal")) ? "45px" : "70px";
 		}
 	};
 	outGuilds.onmouseover = function(){ 
 		guildsHide = true; 
 		outGuilds.style.display = "none"; 
-		guilds.style.left = "-80px";
+		guilds.style.left = "-70px";
 		if(settings.mobilefy){
 			channels.style.left = "-240px";
 		}
