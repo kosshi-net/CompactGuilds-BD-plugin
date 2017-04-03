@@ -12,7 +12,7 @@ CompactGuilds.prototype.getDescription = function () {
 	return "Reduces sidebar's width or hides it completetly by displaying it only when cursor is near left edge. ";
 };
 CompactGuilds.prototype.getVersion = function () {
-	return "0.1.8";
+	return "0.1.9";
 };
 
 CompactGuilds.prototype.windowResizeEvent = function() {
@@ -84,6 +84,12 @@ CompactGuilds.prototype.enable = function() {
 		"left": "-70px",
 		"transition": settings.animstyle +" "+settings.animspeed+"ms"
 	});
+
+	$('.chat div.title-wrap').css({
+		"z-index": "0"
+	});
+
+
 	if(settings.mobilefy){
 		$('.channels-wrap').css({
 			"position": "fixed",
