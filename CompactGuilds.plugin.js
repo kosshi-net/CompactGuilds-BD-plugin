@@ -12,7 +12,7 @@ CompactGuilds.prototype.getDescription = function () {
 	return "Reduces sidebar's width or hides it completetly by displaying it only when cursor is near left edge. ";
 };
 CompactGuilds.prototype.getVersion = function () {
-	return "0.1.9";
+	return "0.2.0";
 };
 
 CompactGuilds.prototype.windowResizeEvent = function() {
@@ -47,11 +47,6 @@ CompactGuilds.prototype.enable = function() {
 	var main = document.getElementsByClassName('flex-horizontal flex-spacer')[0];
 	var channels = document.getElementsByClassName('flex-vertical channels-wrap')[0];
 	
-	if(settings.trim){
-		var accountName = document.getElementsByClassName('username')[0];
-		accountName.style.maxWidth = "40px";
-		channels.style.width = '200px';
-	}
 
 	var guildsHide = true;
 	var overGuilds = document.createElement('div');
@@ -61,44 +56,62 @@ CompactGuilds.prototype.enable = function() {
 	outGuilds.id = 'hg_hoverOut';
 	main.appendChild(outGuilds);
 
-	$('#hg_hoverOver').css({
-		"position":"absolute",
-		"height":"100%",
-		"width": settings.show+"px",
-		"left":"0"
-	});
-	$('#hg_hoverOut').css({
-		"position": "fixed",
-		"height": "100%",
-		"left": settings.hide+"px",
-		"overflowX": "hidden",
-		"overflowY": "hidden",
-		"width": "80%",
-		"zIndex": "9001",
-		"display": "none"
-	});
-	$('.guilds-wrapper').css({
-		"position": "fixed",
-		"height": "100%",
-		"zIndex": "3",
-		"left": "-70px",
-		"transition": settings.animstyle +" "+settings.animspeed+"ms"
-	});
+	let css = `
+		.chat div.title-wrap {
+			z-index: 0;	
+		}
 
-	$('.chat div.title-wrap').css({
-		"z-index": "0"
-	});
+		#hg_hoverOver {
+			position: absolute;
+			height: 100%;
+			width: ${settings.show}px;
+			left: 0;
+		}
 
+		#hg_hoverOut {
+			position: fixed;
+			height: 100%;
+			left: ${settings.hide}px;
+			overflow-x: hidden;
+			overflow-y: hidden;
+			width: 80%;
+			z-index: 9001;
+			display: none;
+		}
 
+		.guilds-wrapper {
+			position: fixed;
+			height: 100%;
+			z-index: 3;
+			left: -70px;
+			transition: ${settings.animstyle} ${settings.animspeed}ms;
+		}
+	`;
 	if(settings.mobilefy){
-		$('.channels-wrap').css({
-			"position": "fixed",
-			"height": "100%",
-			"zIndex": "2",
-			"left": "-240px",
-			"transition": settings.animstyle +" "+settings.animspeed+"ms"
-		});
+		css += `
+			.channels-wrap {
+				position: fixed;
+				height: 100%;
+				z-index: 2;
+				left: -240px;
+				transition: ${settings.animstyle} ${settings.animspeed}ms;
+			}
+		`;
 	}
+	if(settings.trim){
+		css += `
+			.username {
+				max-width = 40px;
+			}
+			.channels-wrap {
+				width: 200px;
+			}
+		`;
+	}
+
+	BdApi.injectCSS('CompactGuildsCSS', css);
+
+
 
 	overGuilds.onmouseover = function(){ 
 		guildsHide = false; 
@@ -139,6 +152,8 @@ CompactGuilds.prototype.disable = function(){
 	channels.style = {};
 	accountName.style.maxWidth = "";
 	channels.style.width = "";
+
+	BdApi.clearCSS('CompactGuildsCSS');
 };
 
 // Unused
