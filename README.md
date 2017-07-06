@@ -15,7 +15,3 @@ Hides the left channel/guildlist when window width is under a specified size giv
 4. Reload/restart Discord (CTRL+R)
 5. Go to Settings>BetterDiscord>Plugins
 6. Enable and configure this plugin
-
-
-### Tips
-If you're using Beards Material Theme, add ``.channel-textarea { z-index: 0 }`` to CustomCSS.
