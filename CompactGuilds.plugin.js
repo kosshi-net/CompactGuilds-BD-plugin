@@ -12,7 +12,7 @@ CompactGuilds.prototype.getDescription = function () {
 	return "Reduces sidebar's width or hides it completetly by displaying it only when cursor is near left edge. ";
 };
 CompactGuilds.prototype.getVersion = function () {
-	return "0.2.0";
+	return "0.2.1";
 };
 
 CompactGuilds.prototype.windowResizeEvent = function() {
@@ -34,6 +34,14 @@ CompactGuilds.prototype.enabled = false; // if guilds are hidden
 CompactGuilds.prototype.start = function () {
 	// Called when plugin is started
 	window.addEventListener('resize',this.windowResizeEvent.bind(this),false);
+
+	const settings = this.loadSettings();
+	if( settings.overrideMins ) {
+
+		require('electron').remote.getCurrentWindow().setMinimumSize( 
+			parseInt(settings.minWidth), parseInt(settings.minHeight) ); // reeee
+	}
+
 	this.windowResizeEvent();
 };
 
@@ -167,20 +175,23 @@ CompactGuilds.prototype.observer = function () {};
 // SETTINGS
 // ========
 
-CompactGuilds.prototype.settingsVersion = 10; 
+CompactGuilds.prototype.settingsVersion = 13; 
 	// Changing this value causes old versions of settings to be resetted. 
 CompactGuilds.prototype.defaultSettings = function () {
 	// Returns default settings
 	return {
 		version: this.settingsVersion, 
-		show:30, 				// Min cursor distance (px) from left edge to view the sidebar
-		hide:300, 				// Cursor distance (px) from left edge to hide the sidebar again
-		trim:true,				// Edit channel css to make it slimmer
-		activeWidth: 1000,		// Plugin activation threshold
-		always: false,			// Ignore activeWidth, keep the bar hidden always
-		mobilefy: true,			// Hide channels too. (Originally this plugin only hid the guilds)
-		animspeed:200,			// Animation speed in milliseconds
-		animstyle:"Linear"		// Animation style
+		show: 			30, 		// Min cursor distance (px) from left edge to view the sidebar
+		hide: 			300, 		// Cursor distance (px) from left edge to hide the sidebar again
+		trim: 			false,		// Edit channel css to make it slimmer
+		activeWidth:    800,		// Plugin activation threshold
+		always:         false,		// Ignore activeWidth, keep the bar hidden always
+		mobilefy:       true,		// Hide channels too. (Originally this plugin only hid the guilds)
+		animspeed:		200,		// Animation speed in milliseconds
+		animstyle:		"Linear",	// Animation style
+		minWidth:  		300,		// Window minimum width
+		minHeight:		300, 		// Window minimum height
+		overrideMins: 	true,		// enables the upper setting
 	};
 };
 
@@ -222,7 +233,10 @@ CompactGuilds.prototype.saveSettings = function (button) {
 	settings.always = document.getElementById('hg_always').checked;
 	settings.mobilefy = document.getElementById('hg_mobilefy').checked;
 	settings.activeWidth = document.getElementById('hg_activeWidth').value;
-	
+
+	settings.minHeight = document.getElementById('hg_minHeight').value;
+	settings.minWidth = document.getElementById('hg_minWidth').value;
+
 	bdPluginStorage.set(this.getName(), 'config', JSON.stringify(settings));
 
 	this.stop();
@@ -259,6 +273,14 @@ CompactGuilds.prototype.getSettingsPanel = function () {
 	html += "<input type='checkbox' id='hg_always'";
 	html += (settings.always) ? " checked>" : ">";
 	html += "Enable guild hiding always<br>";
+
+
+
+	html += "<input type='checkbox' id='hg_enableminsize'";
+	html += (settings.overrideMins) ? " checked>" : ">";
+	html += "Override default window minimum sizes (restart discord when toggling off)<br>";
+	html += "Width:  <input id='hg_minWidth'  type='number' value=" +settings.minWidth+ "> pixels<br>";
+	html += "Height: <input id='hg_minHeight' type='number' value=" +settings.minHeight+ "> pixels<br><br>";
 
 
 	html += "<input type='checkbox' id='hg_trim'";
