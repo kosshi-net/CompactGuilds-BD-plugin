@@ -12,7 +12,7 @@ CompactGuilds.prototype.getDescription = function () {
 	return "Reduces sidebar's width or hides it completetly by displaying it only when cursor is near left edge. ";
 };
 CompactGuilds.prototype.getVersion = function () {
-	return "0.2.1";
+	return "0.2.2";
 };
 
 CompactGuilds.prototype.windowResizeEvent = function() {
@@ -35,6 +35,10 @@ CompactGuilds.prototype.start = function () {
 	// Called when plugin is started
 	window.addEventListener('resize',this.windowResizeEvent.bind(this),false);
 
+	// "globals"
+	this.channelSelector = 'div[class^=channels]';
+	this.mainSelector = 'div[class^=flex]';
+
 	const settings = this.loadSettings();
 	if( settings.overrideMins ) {
 
@@ -52,8 +56,8 @@ CompactGuilds.prototype.enable = function() {
 	var settings = this.loadSettings();
 
 	var guilds = document.getElementsByClassName('guilds-wrapper')[0];
-	var main = document.getElementsByClassName('flex-horizontal flex-spacer')[0];
-	var channels = document.getElementsByClassName('flex-vertical channels-wrap')[0];
+	var main = document.querySelector(this.mainSelector);
+	var channels = document.querySelector(this.channelSelector);
 	
 
 	var guildsHide = true;
@@ -65,7 +69,7 @@ CompactGuilds.prototype.enable = function() {
 	main.appendChild(outGuilds);
 
 	let css = `
-		.chat div.title-wrap {
+		div[class^=titleWrapper] {
 			z-index: 0;	
 		}
 
@@ -97,7 +101,7 @@ CompactGuilds.prototype.enable = function() {
 	`;
 	if(settings.mobilefy){
 		css += `
-			.channels-wrap {
+			${this.channelSelector} {
 				position: fixed;
 				height: 100%;
 				z-index: 2;
@@ -111,7 +115,7 @@ CompactGuilds.prototype.enable = function() {
 			.username {
 				max-width = 40px;
 			}
-			.channels-wrap {
+			${this.channelSelector} {
 				width: 200px;
 			}
 		`;
@@ -150,7 +154,7 @@ CompactGuilds.prototype.disable = function(){
 	if(!this.enabled) return;
 	this.enabled = false;
 	var guilds = document.getElementsByClassName('guilds-wrapper')[0];
-	var channels = document.getElementsByClassName('flex-vertical channels-wrap')[0];
+	var channels = document.querySelector(this.channelSelector);
 	var accountName = document.getElementsByClassName('username')[0];
 	var overGuilds = document.getElementById('hg_hoverOver');
 	var outGuilds = document.getElementById('hg_hoverOut');
