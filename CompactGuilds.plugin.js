@@ -58,10 +58,6 @@ CompactGuilds.prototype.enable = function() {
 	var guilds = document.getElementsByClassName('guilds-wrapper')[0];
 	var main = document.querySelector(this.mainSelector);
 	var channels = document.querySelector(this.channelSelector);
-	
-	// Ugly fix for box under channels
-	document.querySelectorAll('div[class^=container]')[9].style.position = "relative";
-	document.querySelectorAll('div[class^=container]')[9].style.top = "-20px";
 
 
 	var guildsHide = true;
@@ -169,9 +165,6 @@ CompactGuilds.prototype.disable = function(){
 	accountName.style.maxWidth = "";
 	channels.style.width = "";
 
-	// Ugly fix for box under channels
-	document.querySelectorAll('div[class^=container]')[9].style.position = "";
-	document.querySelectorAll('div[class^=container]')[9].style.top = "";
 
 	BdApi.clearCSS('CompactGuildsCSS');
 };
