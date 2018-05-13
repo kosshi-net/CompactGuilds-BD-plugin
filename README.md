@@ -4,7 +4,7 @@ This is a plugin for BetterDiscord.
 ### What does it do?
 Hides the left channel/guildlist when window width is under a specified size giving more space for the text. The sidebar slides to visibility when your cursor is near left edge. Animation style, speed and other behaviour can be configured from plugin settings.
 
-![Exaple gif](http://kosshi.fi/images/bdplugin.gif)
+![Exaple gif](http://kosshi.net/images/bdplugin.gif)
 
 ### How to install?
 1. Make sure you have native Discord application installed with [BetterDiscord](https://betterdiscord.net)
