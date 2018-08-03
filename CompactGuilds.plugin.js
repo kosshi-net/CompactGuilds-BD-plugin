@@ -55,7 +55,7 @@ CompactGuilds.prototype.enable = function() {
 	this.enabled = true;
 	var settings = this.loadSettings();
 
-	var guilds = document.getElementsByClassName('guilds-wrapper')[0];
+	var guilds = document.getElementsByClassName('guildsWrapper-5TJh6A')[0];
 	var main = document.querySelector(this.mainSelector);
 	var channels = document.querySelector(this.channelSelector);
 
@@ -91,7 +91,7 @@ CompactGuilds.prototype.enable = function() {
 			display: none;
 		}
 
-		.guilds-wrapper {
+		.guildsWrapper-5TJh6A {
 			position: fixed;
 			height: 100%;
 			z-index: 3;
@@ -153,7 +153,7 @@ CompactGuilds.prototype.disable = function(){
 	// Permashows guilds
 	if(!this.enabled) return;
 	this.enabled = false;
-	var guilds = document.getElementsByClassName('guilds-wrapper')[0];
+	var guilds = document.getElementsByClassName('guildsWrapper-5TJh6A')[0];
 	var channels = document.querySelector(this.channelSelector);
 	var accountName = document.getElementsByClassName('username')[0];
 	var overGuilds = document.getElementById('hg_hoverOver');
