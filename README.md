@@ -1,3 +1,4 @@
+# UNMAINTAINED
 # CompactGuilds-BD-plugin
 This is a plugin for BetterDiscord.
 
